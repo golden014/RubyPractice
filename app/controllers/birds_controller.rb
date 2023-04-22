@@ -11,6 +11,11 @@ class BirdsController < ApplicationController
 
     def create
         bird = Bird.new(bird_params)
+
+        #semua error dari bird
+        return render_validation_error(bird.errors) if bird.invalid?
+
+
         bird.save!
         render json: bird
     end    
@@ -22,6 +27,8 @@ class BirdsController < ApplicationController
     def update
         bird = Bird.find(params[:id])
         bird.assign_attributes(bird_params)
+        return render_validation_error(bird.errors) if bird.invalid?
+
         bird.save!
         render json: bird
     end
@@ -30,5 +37,12 @@ class BirdsController < ApplicationController
         bird = Bird.find(params[:id])
         bird.delete
         render json: "Delete Success"
+    end
+
+    def render_validation_error(errors)
+        res = errors.map do |error|
+            {field: error.attribute, message: error.full_message}
+        end
+        render json: res, status: :unprocessable_entity
     end
 end
