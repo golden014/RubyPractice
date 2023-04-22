@@ -4,6 +4,14 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  #http GET
+  #http GET, akan ngereturn method index di birdsController
   get '/birds', to: 'birds#index'
+
+  get '/birds/:id', to:'birds#show'
+
+  post '/birds', to: 'birds#create'
+
+  patch '/birds/:id', to: 'birds#update'
+
+  delete '/birds/:id', to: 'birds#delete'
 end
